@@ -20,4 +20,17 @@ describe("Lambda tests", () => {
         expect(resp.statusCode).to.eq(200);
 
     })
+
+    it("Should handle badly formed packet", async () => {
+
+        const event = {
+        }
+
+        const resp = await handler(event)
+
+        console.info({resp})
+
+        expect(resp.statusCode).to.eq(400);
+
+    })
 })

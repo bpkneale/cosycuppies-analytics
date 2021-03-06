@@ -1,4 +1,6 @@
 
+let globalEvent;
+
 const response = (code, jsonBody) => {
     if(code !== 200) {
         console.error({globalEvent})
@@ -11,6 +13,7 @@ const response = (code, jsonBody) => {
 
 // lambda function call
 exports.handler = async function(event) {
+    globalEvent = event;
 
     let parsed = null;
     try {
@@ -23,6 +26,7 @@ exports.handler = async function(event) {
         }
     }
     catch(err) {
+        console.error(err);
         return response(400, {success: false, status: "Unable to parse request into JSON", extra: err.message})
     }
     
