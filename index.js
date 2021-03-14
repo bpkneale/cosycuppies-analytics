@@ -1,9 +1,11 @@
 
 let globalEvent;
+const bunyan = require('bunyan');
+const log = bunyan.createLogger({name: "cosycuppies-analytics"});
 
 const response = (code, jsonBody) => {
     if(code !== 200) {
-        console.error({globalEvent})
+        log.error({globalEvent})
     }
     return {
         statusCode: code,
@@ -14,8 +16,6 @@ const response = (code, jsonBody) => {
 // lambda function call
 exports.handler = async function(event) {
     globalEvent = event;
-    const bunyan = require('bunyan');
-    const log = bunyan.createLogger({name: "cosycuppies-analytics"});
 
     let parsed = null;
     try {
@@ -28,7 +28,7 @@ exports.handler = async function(event) {
         }
     }
     catch(err) {
-        console.error(err);
+        log.error(err);
         return response(400, {success: false, status: "Unable to parse request into JSON", extra: err.message})
     }
     
