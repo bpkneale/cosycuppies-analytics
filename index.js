@@ -14,6 +14,8 @@ const response = (code, jsonBody) => {
 // lambda function call
 exports.handler = async function(event) {
     globalEvent = event;
+    const bunyan = require('bunyan');
+    const log = bunyan.createLogger({name: "cosycuppies-analytics"});
 
     let parsed = null;
     try {
@@ -30,7 +32,7 @@ exports.handler = async function(event) {
         return response(400, {success: false, status: "Unable to parse request into JSON", extra: err.message})
     }
     
-    console.info({parsed})
+    log.info({event: {...parsed}}, `Analytics event`)
 
     return response(200, {success: true, length: JSON.stringify(parsed).length});
 };
